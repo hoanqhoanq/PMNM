@@ -11,6 +11,6 @@
     <body>
         <h1>Chi tiết sản phẩm</h1>
         <p>ID sản phẩm: {{ $id }}</p>
-        <a href="/product"><button>Quay lại</button></a>
+        <a href="/products"><button>Quay lại</button></a>
     </body>
 </html>

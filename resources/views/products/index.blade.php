@@ -15,6 +15,6 @@
                 <li>Sản phẩm 2</li>
                 <li>Sản phẩm 3</li>
             </ul>
-            <a href="/product/add"><button>Thêm sản phẩm</button></a>
+            <a href="/products/add"><button>Thêm sản phẩm</button></a>
     </body>
 </html>

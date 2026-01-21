@@ -21,7 +21,7 @@
             </div>
             <div>
                 <button type="submit">Thêm sản phẩm</button>
-                <a href="/product"><button type="button">Quay lại</button></a>
+                <a href="/products"><button type="button">Quay lại</button></a>
             </div>
         </form>
     </body>
