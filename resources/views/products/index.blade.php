@@ -1,20 +1,38 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title></title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="">
-    </head>
-    <body>
-            <h1>Danh sách sản phẩm</h1>
-            <ul>
-                <li>Sản phẩm 1</li>
-                <li>Sản phẩm 2</li>
-                <li>Sản phẩm 3</li>
-            </ul>
-            <a href="/products/add"><button>Thêm sản phẩm</button></a>
-    </body>
+<head>
+    <title>Products</title>
+</head>
+<body>
+
+    <h1>{{ $title }}</h1>
+
+    <table border="1">
+        <tr>
+            <th>ID</th>
+            <th>NAME</th>
+            <th>PRICE</th>
+            <th>Detail</th>
+        </tr>
+
+        @foreach($products as $product)
+        <tr>
+            <td>{{ $product['id'] }}</td>
+            <td>{{ $product['name'] }}</td>
+            <td>{{ $product['price'] }}</td>
+            <td>
+                <a href="/products/{{ $product['id'] }}">
+                    <button>Chi tiết</button>
+                </a>
+            </td>
+
+        </tr>
+        
+
+        @endforeach
+
+    </table>
+    <a href="{{ route('products.add') }}"> <button>Thêm sản phẩm</button></a>
+
+</body>
 </html>
