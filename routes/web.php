@@ -1,58 +1,42 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\TestController;
 use App\Http\Middleware\CheckTimeAccess;
-
-/*
-|--------------------------------------------------------------------------
-| Routes không liên quan product → GIỮ NGUYÊN
-|--------------------------------------------------------------------------
-*/
+use App\Http\Middleware\CheckAgeAccess;
+use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('Home');
+    return view('home');
 });
-
-// login
-Route::get('/login', [ProductController::class, 'login']);
-Route::post('/login', [ProductController::class, 'checkLogin']);
-
-// sinhvien
-Route::get('/sinhvien/{name?}/{mssv?}', function ($name = 'Tran Huy Hoang', $mssv = '0031267') {
-    return view('sinhvien', compact('name', 'mssv'));
+Route::get('/test', function () {
+    return response()->json(['message' => 'This is a test route']);
 });
-
-// banco
-Route::get('/banco/{n}', function ($n) {
-    return view('banco', compact('n'));
-});
-
-/*
-|--------------------------------------------------------------------------
-| Product Routes → gom nhóm + middleware
-|--------------------------------------------------------------------------
-*/
-
-Route::prefix('products')
-    ->middleware(CheckTimeAccess::class)
-    ->controller(ProductController::class)
-    ->group(function () {
-
-        // Danh sách
-        Route::get('/', 'index')->name('products.index');
-
-        // Form thêm
-        Route::get('/create', 'create')->name('products.add');
-
-        // Xử lý thêm
-        Route::post('/', 'store')->name('products.store');
-
-        // Chi tiết
-        Route::get('/{id}', 'getDetail')->name('products.detail');
-    });
-
-// 404
-Route::fallback(function () {
+route::fallback(function(){
     return view('error.404');
 });
+route::get('/sinhvien/{name?}/{mssv?}', function($name = "Luong Xuan Hieu", $mssv = "123456"){
+    return "Hello ban $name, MSSV: $mssv";
+});
+Route::get('/banco/{n}', function (int $n) {
+    return view('banco', ['n' => $n]);
+});
+
+Route::prefix('product')->group(function () {
+    Route::controller(ProductController::class)->group(function () {
+        Route::get('/', 'index')->middleware(CheckTimeAccess::class);
+        Route::get('/detail/{id}', 'getDetail');
+        Route::get('/create', 'create')->name('add');
+        Route::post('/store', 'store');
+    });
+});
+Route::prefix('auth')->group(function () {
+    Route::controller(AuthController::class)->group(function () {
+        Route::get('/signin', 'SignIn')->name('auth.signin');
+        Route::post('/checkSignIn', 'CheckSignIn')->middleware(CheckAgeAccess::class)->name('auth.checkSignIn');
+        Route::get('/age', 'age')->name('auth.age');
+        Route::post('/storeAge', 'storeAge')->middleware(CheckAgeAccess::class)->name('auth.storeAge');
+    });
+});
+Route::resource('test',TestController::class);
