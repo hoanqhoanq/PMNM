@@ -6,6 +6,10 @@ use App\Http\Controllers\TestController;
 use App\Http\Middleware\CheckTimeAccess;
 use App\Http\Middleware\CheckAgeAccess;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CategoryController;
+
+Route::resource('categories', CategoryController::class);
+
 
 Route::get('/', function () {
     return view('home');
@@ -13,10 +17,12 @@ Route::get('/', function () {
 Route::get('/test', function () {
     return response()->json(['message' => 'This is a test route']);
 });
-route::fallback(function(){
-    return view('error.404');
+
+Route::get('/admin', function () {
+    return view('layout.admin');
 });
-route::get('/sinhvien/{name?}/{mssv?}', function($name = "Luong Xuan Hieu", $mssv = "123456"){
+
+route::get('/sinhvien/{name?}/{mssv?}', function($name = "tran huy hoang", $mssv = "123456"){
     return "Hello ban $name, MSSV: $mssv";
 });
 Route::get('/banco/{n}', function (int $n) {
@@ -40,3 +46,7 @@ Route::prefix('auth')->group(function () {
     });
 });
 Route::resource('test',TestController::class);
+
+route::fallback(function(){
+    return view('error.404');
+});
